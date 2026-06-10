@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, Cpu, LineChart, Settings } from "lucide-react";
+import { Activity, Cpu, LineChart, Settings, Menu, X } from "lucide-react";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
     { name: "Live Terminal", href: "/", icon: <Activity size={18} /> },
@@ -14,43 +15,41 @@ export default function Sidebar() {
     { name: "Market Pulse", href: "/pulse", icon: <LineChart size={18} /> },
   ];
 
-  return (
-    <aside className="w-[280px] bg-[#030405] border-r border-slate-800/60 h-full flex flex-col shrink-0 relative z-50 transition-all">
-      
+  const SidebarContent = () => (
+    <>
       {/* --- AMBER GLOW & GEOMETRIC SHARD LOGO --- */}
-      <div className="h-[120px] flex items-center px-6 border-b border-slate-800/60 relative overflow-hidden group cursor-default">
-        {/* Subtle flow background glow */}
+      <div className="h-[120px] flex items-center justify-between px-6 border-b border-slate-800/60 relative overflow-hidden group cursor-default">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-amber-500/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
-        <div className="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-colors duration-1000 pointer-events-none" />
-
+        
         <div className="flex items-center gap-4 relative z-10">
-          
-          {/* 1. The Geometric Shard Emblem */}
-          <div className="relative h-12 w-12 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.1)] group-hover:shadow-[0_0_30px_rgba(245,158,11,0.25)] transition-all duration-700 rounded-lg bg-slate-900/50 border border-slate-800 overflow-hidden">
-            {/* Subtle flow gradient inside the shard container */}
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-orange-500/10 opacity-40 group-hover:opacity-100 transition-opacity duration-1000" />
-            
-            {/* Custom 3D Shard SVG */}
-            <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 relative z-10 text-amber-500 drop-shadow-[0_0_5px_rgba(245,158,11,0.4)] group-hover:drop-shadow-[0_0_10px_rgba(245,158,11,0.8)] transition-all duration-700">
+          {/* Geometric Shard Emblem */}
+          <div className="relative h-12 w-12 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.1)] rounded-lg bg-slate-900/50 border border-slate-800 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-orange-500/10 opacity-40" />
+            <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-amber-500 drop-shadow-[0_0_5px_rgba(245,158,11,0.4)]">
               <path d="M12 2L3 14l9 8 9-8-9-10z" fill="currentColor" fillOpacity="0.15" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
               <path d="M12 2v20" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" opacity="0.7" />
               <path d="M3 14l9-4 9 4" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" opacity="0.7" />
             </svg>
           </div>
 
-          {/* 2. The Dominant Typographic Name */}
+          {/* Dominant Typographic Name */}
           <div className="flex flex-col pt-1">
-            <h2 className="text-4xl font-black tracking-tighter text-white leading-none drop-shadow-md">
+            <h2 className="text-4xl font-black tracking-tighter text-white leading-none">
               TICK<span className="text-amber-500">X</span>
             </h2>
-            <div className="flex items-center gap-1.5 mt-1.5">
-              <span className="text-[9px] font-mono font-bold tracking-[0.25em] text-slate-500 uppercase group-hover:text-amber-500/70 transition-colors duration-700">
-                Data Engine
-              </span>
-            </div>
+            <span className="text-[9px] font-mono font-bold tracking-[0.25em] text-slate-500 uppercase mt-1.5">
+              Data Engine
+            </span>
           </div>
-
         </div>
+
+        {/* Mobile Close Button */}
+        <button 
+          onClick={() => setIsOpen(false)} 
+          className="md:hidden text-slate-400 hover:text-white p-1 rounded-sm border border-transparent hover:border-slate-800 transition-all"
+        >
+          <X size={20} />
+        </button>
       </div>
 
       {/* --- NAVIGATION LINKS --- */}
@@ -62,13 +61,13 @@ export default function Sidebar() {
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <Link key={item.name} href={item.href}>
-              <div className={`flex items-center gap-3 px-3 py-3.5 rounded-sm transition-all duration-500 group ${
+            <Link key={item.name} href={item.href} onClick={() => setIsOpen(false)}>
+              <div className={`flex items-center gap-3 px-3 py-3.5 rounded-sm transition-all duration-300 group ${
                 isActive 
-                  ? "bg-slate-900 border border-slate-800 text-white shadow-[inset_2px_0_0_0_#f59e0b]" // amber-500 hex
+                  ? "bg-slate-900 border border-slate-800 text-white shadow-[inset_2px_0_0_0_#f59e0b]" 
                   : "text-slate-400 hover:bg-slate-900/50 hover:text-slate-200"
               }`}>
-                <div className={`${isActive ? "text-amber-500" : "text-slate-500 group-hover:text-slate-400"} transition-colors duration-500`}>
+                <div className={`${isActive ? "text-amber-500" : "text-slate-500 group-hover:text-zinc-400"}`}>
                   {item.icon}
                 </div>
                 <span className="text-sm font-bold tracking-wide">{item.name}</span>
@@ -80,7 +79,7 @@ export default function Sidebar() {
 
       {/* --- BOTTOM ADMIN AREA --- */}
       <div className="p-4 border-t border-slate-800/60">
-        <div className="flex items-center gap-3 px-3 py-3 rounded-sm text-slate-500 hover:text-white hover:bg-slate-900/50 transition-colors duration-500 cursor-pointer mb-2">
+        <div className="flex items-center gap-3 px-3 py-3 rounded-sm text-slate-500 hover:text-white hover:bg-slate-900/50 transition-colors cursor-pointer mb-2">
           <Settings size={18} />
           <span className="text-sm font-bold tracking-wide">System Config</span>
         </div>
@@ -92,14 +91,49 @@ export default function Sidebar() {
           <div className="flex flex-col">
             <span className="text-xs font-bold text-slate-200">Admin Console</span>
             <div className="flex items-center gap-1.5 mt-0.5">
-              {/* Keeping the online status green, as it's a universal UI standard for "connected" */}
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_5px_rgba(16,185,129,0.5)]"></span>
               <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">Online</span>
             </div>
           </div>
         </div>
       </div>
-      
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* 1. MOBILE FLOATING TOP BAR (Visible only on mobile screen viewports) */}
+      <header className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#030405] border-b border-slate-800/60 flex items-center justify-between px-6 z-40">
+        <div className="flex items-center gap-2">
+          <span className="text-xl font-black tracking-tighter text-white">
+            TICK<span className="text-amber-500">X</span>
+          </span>
+        </div>
+        <button 
+          onClick={() => setIsOpen(true)}
+          className="text-slate-400 hover:text-white p-2 border border-slate-800/80 rounded-sm bg-slate-900/30"
+        >
+          <Menu size={20} />
+        </button>
+      </header>
+
+      {/* 2. DESKTOP PERMANENT SIDEBAR (Hidden on mobile) */}
+      <aside className="hidden md:flex w-[280px] bg-[#030405] border-r border-slate-800/60 h-full flex-col shrink-0 relative z-50">
+        <SidebarContent />
+      </aside>
+
+      {/* 3. MOBILE SLIDING DRAWER OVERLAY */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+      <aside className={`fixed inset-y-0 left-0 w-[280px] bg-[#030405] border-r border-slate-800/60 h-full flex flex-col z-50 transform transition-transform duration-300 md:hidden ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      }`}>
+        <SidebarContent />
+      </aside>
+    </>
   );
 }

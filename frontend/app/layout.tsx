@@ -24,7 +24,7 @@ export default function RootLayout({
           <Sidebar />
           
           {/* Main Content Area */}
-          <div className="flex-1 flex flex-col overflow-y-auto relative custom-scrollbar">
+          <div className="flex-1 flex flex-col overflow-y-auto relative custom-scrollbar pt-16 md:pt-0">
             
             {/* The Page Content (NEXUS, Robo-Advisor, etc.) */}
             <main className="flex-1">
