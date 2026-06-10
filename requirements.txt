@@ -1,7 +1,12 @@
 streamlit
 yfinance
 plotly
-tensorflow
 scikit-learn
 pandas
 numpy
+torch
+stable-baselines3
+gymnasium
+textblob
+joblib
+matplotlib

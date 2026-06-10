@@ -1,64 +1,80 @@
-import sqlite3
-import os
-
-import pandas as pd
 import numpy as np
+import pandas as pd
+import torch
+import torch.nn as nn
+from pathlib import Path
 from sklearn.preprocessing import MinMaxScaler
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense, Dropout
+import joblib
 
-# 1. Load Data from SQL Vault
-script_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(script_dir)
-db_path = os.path.join(project_root, "data", "stock_vault.db")
-model_path = os.path.join(project_root, "models", "reliance_model.keras")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-conn = sqlite3.connect(db_path)
-df = pd.read_sql('SELECT * FROM raw_market_data', conn)
+# --- LSTM Model Architecture ---
+class LSTMPredictor(nn.Module):
+    def __init__(self, input_size=1, hidden_size=50, num_layers=2):
+        super(LSTMPredictor, self).__init__()
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
+        self.fc = nn.Linear(hidden_size, 1)
 
-# DEBUG: Clean column names (Sometimes SQL adds extra levels)
-# This flattens the names if they are tuples
-df.columns = [col if isinstance(col, str) else col[0] for col in df.columns]
-print(f"Columns found: {df.columns.tolist()}")
+    def forward(self, x):
+        out, _ = self.lstm(x)
+        out = self.fc(out[:, -1, :]) # Take the last time step
+        return out
 
-# 2. Advanced Feature Engineering
-# We use .get() or check for 'Close' to avoid the KeyError
-target_col = 'Close' if 'Close' in df.columns else df.columns[1] 
+def create_sequences(data, seq_length):
+    xs, ys = [], []
+    for i in range(len(data) - seq_length):
+        xs.append(data[i:(i + seq_length)])
+        ys.append(data[i + seq_length])
+    return np.array(xs), np.array(ys)
 
-df['MA50'] = df[target_col].rolling(window=50).mean()
-df = df.dropna()
+def train_model(df_path, seq_length=60, epochs=50, learning_rate=0.001):
+    print("Initiating Training Pipeline...")
+    
+    # 1. Load Data
+    df = pd.read_csv(df_path)
+    df['Date'] = pd.to_datetime(df['Date'])
+    df = df.sort_values('Date')
+    
+    # 2. Strict Train/Test Split BEFORE Scaling (80/20 split)
+    train_size = int(len(df) * 0.8)
+    train_df = df.iloc[:train_size].copy()
+    
+    # 3. Initialize and FIT the scaler ONLY on training data
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    train_prices = train_df['Close'].values.reshape(-1, 1)
+    scaled_train = scaler.fit_transform(train_prices)
+    
+    # 4. Save the Scaler (CRUCIAL FIX)
+    joblib.dump(scaler, PROJECT_ROOT / 'quant_scaler.gz')
+    print("Scaler fitted on Training Data and saved as 'quant_scaler.gz'")
+    
+    # 5. Create Sequences
+    X_train, y_train = create_sequences(scaled_train, seq_length)
+    X_train = torch.tensor(X_train, dtype=torch.float32)
+    y_train = torch.tensor(y_train, dtype=torch.float32)
+    
+    # 6. Train the LSTM
+    model = LSTMPredictor()
+    criterion = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    
+    print("Training LSTM...")
+    for epoch in range(epochs):
+        model.train()
+        optimizer.zero_grad()
+        output = model(X_train)
+        loss = criterion(output, y_train)
+        loss.backward()
+        optimizer.step()
+        
+        if (epoch+1) % 10 == 0:
+            print(f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.6f}')
+            
+    # 7. Save the Model
+    torch.save(model.state_dict(), PROJECT_ROOT / 'lstm_quant_model.pth')
+    print("Model saved as 'lstm_quant_model.pth'")
 
-# 3. Scaling for the Stacked LSTM
-scaler = MinMaxScaler(feature_range=(0,1))
-scaled_data = scaler.fit_transform(df[[target_col, 'MA50']].values)
-
-# 4. Create Sliding Window (100-day memory)
-time_step = 100
-X, y = [], []
-for i in range(time_step, len(scaled_data)):
-    X.append(scaled_data[i-time_step:i, :])
-    y.append(scaled_data[i, 0])
-
-X, y = np.array(X), np.array(y)
-X = np.reshape(X, (X.shape[0], X.shape[1], 2))
-
-# 5. Build and Train the Engine
-model = Sequential([
-    LSTM(50, return_sequences=True, input_shape=(100, 2)),
-    Dropout(0.2),
-    LSTM(50, return_sequences=True),
-    Dropout(0.2),
-    LSTM(50),
-    Dropout(0.2),
-    Dense(1)
-])
-
-model.compile(optimizer='adam', loss='mean_squared_error')
-
-print(f"Engine Training Started for {target_col}...")
-model.fit(X, y, epochs=10, batch_size=32)
-# Save the 'Brain' so we can use it later
-model.save(model_path)
-print(f"Model saved to disk as {model_path}")
-print("Success: Quantitative Engine Trained.")
+if __name__ == "__main__":
+    # Example usage (Replace 'data.csv' with your actual historical data file)
+    # train_model('data.csv')
+    pass
