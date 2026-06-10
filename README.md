@@ -1,17 +1,45 @@
-# 📈 2026 Quantitative Finance Engine (Stacked LSTM)
+# TICKX // QUANTITATIVE TELEMETRY SYSTEM
 
-A production-grade algorithmic trading engine that utilizes **Stacked LSTM (Long Short-Term Memory)** networks to forecast NSE equity prices (e.g., Reliance.NS).
+An institutional-grade algorithmic trading suite and deep-learning prediction terminal. Driven by an automated data pipeline and high-density financial layout systems.
 
-## 🏛️ System Architecture
-- **Data Persistence Layer:** Automated ingestion of NSE market data into a dedicated **SQLite** vault using `yfinance`.
-- **Feature Engineering Pipeline:** Implementation of multi-variate analysis including **MA50 (50-day Moving Average)** and daily volatility tracking.
-- **Deep Learning Engine:** 3-layer Stacked LSTM with **Dropout (0.2)** layers to ensure robust generalization and prevent overfitting.
+---
 
-## 📂 Project Structure
-- `/data`: Persistence layer for SQL databases (`stock_vault.db`).
-- `/models`: Serialized trained model weights (`reliance_model.keras`).
-- `/src`: Modular source code for Ingestion, Training, and Prediction.
+## SYSTEM ARCHITECTURE
 
-## 🚀 Key Metrics
-- **Performance:** Designed to handle temporal dependencies in high-dimensional financial data.
-- **Core CSE Fundamentals:** Demonstrates proficiency in modular software architecture and version-controlled environments.
+```text
+TickX/
+├── src/                    # LSTM Machine Learning Pipeline
+│   └── predictor.py        # Core Model Inference Engine
+├── api.py                  # FastAPI Application Engine
+├── requirements.txt        # Backend Environment Specifications
+└── frontend/               # Next.js Application
+    ├── app/
+    │   ├── page.tsx        # NEXUS Brutalist Grid Terminal
+    │   └── pulse/page.tsx  # Market Sentiment NLP Tracker
+    └── components/
+        └── ui/Sidebar.tsx  # Approach 2 Shard Logo Interface
+
+CORE SUBSYSTEMS
+NEXUS Terminal: A high-density, real-time market data monitoring workspace anchored to strict grid layouts.
+
+Predictive Engine: Stacked Long Short-Term Memory (LSTM) neural networks generating localized next-day volatility vectors.
+
+Market Pulse: An asset-specific Natural Language Processing (NLP) pipeline evaluating broader institutional market sentiment.
+
+DEPENDENCY INITIALIZATION
+1. Core Core Backend (FastAPI)
+# Initialize environment dependencies
+pip install -r requirements.txt
+
+# Launch application endpoint
+python -m uvicorn api:app --reload
+
+2. Frontend Interface (Next.js)
+
+cd frontend
+
+# Install package architecture
+npm install
+
+# Initialize development client
+npm run dev
