@@ -1,71 +1,72 @@
-# ⚡ TICKX // QUANTITATIVE TELEMETRY SYSTEM
+# ⚡ TICX // QUANTITATIVE TELEMETRY ENGINE
 
-> Institutional-grade algorithmic trading suite and deep-learning prediction terminal driven by automated yFinance extraction pipelines and high-density financial layouts.
+> Institutional-grade algorithmic trading suite and deep-learning prediction terminal. Driven by automated market extraction pipelines, Stacked LSTM neural networks, and a cinematic Next.js frontend architecture.
 
 ---
 
-### 🌐 System Overview
-TickX is a modular quantitative development environment engineered to bridge deep learning models with high-performance visualization systems. The core system hosts cascading market scrapers, a multi-layered Stacked LSTM core engine for asset price forecasting, and asset-specific Natural Language Processing pipelines to aggregate macroeconomic market sentiment.
+### 🌐 SYSTEM OVERVIEW
+Ticx is a modular quantitative development environment engineered to bridge complex machine learning models with high-performance visualization systems. The core system hosts cascading market scrapers, a multi-layered predictive core engine for asset price forecasting, and asset-specific Natural Language Processing pipelines to aggregate macroeconomic market sentiment.
 
-[Terminal Interface]  ─── (FastAPI Pipeline) ─── [Stacked LSTM Engine]
+[Client Terminal]  ─── (FastAPI Pipeline) ─── [Stacked LSTM Engine]
 
 ---
 
 ## 🏗️ SYSTEM ARCHITECTURE
 
 ```text
-TickX/
-├── src/                    # LSTM Machine Learning Pipeline
-│   └── predictor.py        # Core Model Inference Engine
-├── api.py                  # FastAPI Application Engine
-├── requirements.txt        # Backend Environment Specifications
+Ticx/
+├── backend/                # Python Fast API & ML Pipeline
+│   ├── predictor.py        # Core LSTM Model Inference Engine
+│   ├── api.py              # FastAPI Application Engine
+│   └── requirements.txt    # Backend Environment Specifications
 └── frontend/               # Next.js Application Architecture
     ├── app/
     │   ├── page.tsx        # NEXUS Brutalist Grid Terminal
-    │   └── pulse/page.tsx  # Market Sentiment NLP Tracker
-    └── components/
-        └── ui/Sidebar.tsx  # Approach 2 Geometric Shard Interface
-⚡ CORE SUBSYSTEMS
+    │   ├── pulse/          # Market Sentiment NLP Tracker
+    │   ├── robo-advisor/   # AI Financial Guidance Module
+    │   ├── sign-in/        # 70/30 Cinematic Auth Portal
+    │   └── sign-up/        # Clerk Authentication Routing
+    ├── components/         # Global Navigation & UI Suites
+    └── middleware.ts       # Route Protection & Auth Gateway
+
+CORE SUBSYSTEMS
 Subsystem	Layer Architecture	Primary Function
-NEXUS Terminal	Next.js / Tailwind CSS	Real-time asset telemetry tracking, command-line search indexing, and unified brutalist data structures.
+Auth Gateway	Clerk / Next.js	High-security 70/30 split cinematic login portal blocking unauthorized API access.
+NEXUS Terminal	Next.js / Tailwind CSS	Real-time asset telemetry tracking, command-line search indexing, and brutalist data structures.
 Predictive Engine	PyTorch / Scikit-Learn	Deep-learning matrix execution calculating high-probability next-day volatility trajectories.
 Market Pulse	Natural Language Processing	Automated scraping across financial news feeds for continuous real-time sentiment extraction.
 
 ⚙️ DEPENDENCY INITIALIZATION
-1. Core Production Backend (FastAPI Engine)
+1. Security Environment (Frontend)
+To initialize the authentication vault, you must provide Clerk API keys in the frontend directory.
+Create a .env.local file inside /frontend with the following variables:
+
+Code snippet
+
+
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/
+NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/
+
+2. Frontend Interface Terminal (Next.js Node Instance)
+cd frontend
+npm install
+npm run dev
+
+3. Core Production Backend (FastAPI Engine)
 The analytical core acts as a localized REST API handling predictive data computation streams.
 
-Bash
-
-
-# Clone the repository architecture
-git clone [https://github.com/YOUR_USERNAME/TickX.git](https://github.com/YOUR_USERNAME/TickX.git)
-cd TickX
-
-# Initialize localized python dependencies
 pip install -r requirements.txt
-
-# Launch application server endpoint
 python -m uvicorn api:app --reload
-2. Frontend Interface Terminal (Next.js Node Instance)
-The client interface requires a secondary asynchronous terminal stack to run the interface.
 
-Bash
-
-
-# Navigate to the frontend directory layer
-cd frontend
-
-# Install client architecture packages
-npm install
-
-# Initialize development compilation sequence
-npm run dev
 🔒 SECURITY & ARCHITECTURE CLASSIFICATION
-Environment Status: Active / Non-Custodial
+Environment Status: Production Ready / Non-Custodial
 
-Data Flow Pipeline: Restricted Localhost Interface
+Data Flow Pipeline: Localhost FastAPI -> Vercel Next.js Edge
 
-Classification: Internal Quantitative Prototype Testing Layer
+Classification: Proprietary Quantitative Prototype
 
-DEVELOPMENT MATRIX // TICKX QUANTITATIVE SYSTEMS © 2026
+DEVELOPMENT MATRIX // TICX QUANTITATIVE SYSTEMS © 2026

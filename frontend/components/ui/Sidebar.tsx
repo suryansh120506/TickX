@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, Cpu, LineChart, Settings, Menu, X } from "lucide-react";
+import { Activity, Cpu, LineChart, Menu, X, LogOut } from "lucide-react";
+import { SignOutButton } from "@clerk/nextjs";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -32,10 +33,10 @@ export default function Sidebar() {
             </svg>
           </div>
 
-          {/* Dominant Typographic Name */}
+          {/* ANIMATED TYPOGRAPHIC NAME (Updated to Ticx) */}
           <div className="flex flex-col pt-1">
-            <h2 className="text-4xl font-black tracking-tighter text-white leading-none">
-              TICK<span className="text-amber-500">X</span>
+            <h2 className="text-4xl font-black tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 drop-shadow-md">
+              Tic<span className="inline-block text-amber-500 animate-pulse drop-shadow-[0_0_15px_rgba(245,158,11,0.8)]">x</span>
             </h2>
             <span className="text-[9px] font-mono font-bold tracking-[0.25em] text-slate-500 uppercase mt-1.5">
               Data Engine
@@ -77,36 +78,29 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* --- BOTTOM ADMIN AREA --- */}
+      {/* --- SECURE DISCONNECT (Sign Out) --- */}
       <div className="p-4 border-t border-slate-800/60">
-        <div className="flex items-center gap-3 px-3 py-3 rounded-sm text-slate-500 hover:text-white hover:bg-slate-900/50 transition-colors cursor-pointer mb-2">
-          <Settings size={18} />
-          <span className="text-sm font-bold tracking-wide">System Config</span>
-        </div>
-        
-        <div className="px-3 flex items-center gap-3 pt-2">
-          <div className="h-8 w-8 rounded-sm bg-slate-800 border border-slate-700 flex items-center justify-center">
-            <span className="text-xs font-bold text-white">AD</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-bold text-slate-200">Admin Console</span>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_5px_rgba(16,185,129,0.5)]"></span>
-              <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">Online</span>
+        <SignOutButton>
+          <button className="flex items-center justify-between w-full px-4 py-3 rounded-sm bg-red-500/5 border border-red-500/20 text-red-500 hover:bg-red-500/20 hover:border-red-500/40 transition-all duration-300 group shadow-[0_0_15px_rgba(239,68,68,0)] hover:shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+            <div className="flex flex-col items-start">
+              <span className="text-[10px] font-mono tracking-widest uppercase text-red-500/70 group-hover:text-red-400">Secure Session</span>
+              <span className="text-sm font-bold tracking-wide uppercase">Disconnect</span>
             </div>
-          </div>
-        </div>
+            <LogOut size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
+          </button>
+        </SignOutButton>
       </div>
     </>
   );
 
   return (
     <>
-      {/* 1. MOBILE FLOATING TOP BAR (Visible only on mobile screen viewports) */}
+      {/* 1. MOBILE FLOATING TOP BAR */}
       <header className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#030405] border-b border-slate-800/60 flex items-center justify-between px-6 z-40">
         <div className="flex items-center gap-2">
-          <span className="text-xl font-black tracking-tighter text-white">
-            TICK<span className="text-amber-500">X</span>
+          {/* ANIMATED MOBILE TYPOGRAPHY */}
+          <span className="text-xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400">
+            Tic<span className="inline-block text-amber-500 animate-pulse">x</span>
           </span>
         </div>
         <button 
@@ -117,7 +111,7 @@ export default function Sidebar() {
         </button>
       </header>
 
-      {/* 2. DESKTOP PERMANENT SIDEBAR (Hidden on mobile) */}
+      {/* 2. DESKTOP PERMANENT SIDEBAR */}
       <aside className="hidden md:flex w-[280px] bg-[#030405] border-r border-slate-800/60 h-full flex-col shrink-0 relative z-50">
         <SidebarContent />
       </aside>
